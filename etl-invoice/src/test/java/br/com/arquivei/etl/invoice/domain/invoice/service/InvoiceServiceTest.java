@@ -4,6 +4,7 @@ import br.com.arquivei.etl.invoice.domain.apiclient.InvoiceResponse;
 import br.com.arquivei.etl.invoice.domain.invoice.Invoice;
 import br.com.arquivei.etl.invoice.domain.invoice.XML;
 import br.com.arquivei.etl.invoice.domain.invoice.repository.InvoiceRepository;
+import br.com.arquivei.etl.invoice.domain.invoice.xml.NfeProc;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,13 +25,30 @@ public class InvoiceServiceTest {
   private InvoiceRepository repository;
 
   @Test
-  public void shouldSaveANewInvoice() {
-    final var accessKey = "32180105570714000825550010031977311099185510";
+  public void shouldTransformAsNewNfeProc() {
+    final var accessKey = "35180100355382000176550010000079441000079448";
 
     final var response = new InvoiceResponse();
     response.setAccessKey(accessKey);
     response.setXml(XML.BASE_64); //vNF=6.49
-    service.load(response);
+
+    final NfeProc nfeProc = service.transform(response);
+
+    Assertions.assertThat(nfeProc.getProtNFe().getInfProt().getChNFe()).isEqualTo(accessKey);
+    Assertions.assertThat(nfeProc.getNFe().getInfNFe().getTotal().getICMSTot().getvNf()).isEqualTo(6.49);
+
+  }
+
+  @Test
+  public void shouldSaveANewInvoice() {
+    final var accessKey = "35180100355382000176550010000079441000079448";
+    final var response = new InvoiceResponse();
+    response.setAccessKey(accessKey);
+    response.setXml(XML.BASE_64); //vNF=6.49
+
+    final var nfeProc = service.transform(response);
+
+    service.load(nfeProc);
 
     final var invoice = repository.findById(accessKey).get();
 

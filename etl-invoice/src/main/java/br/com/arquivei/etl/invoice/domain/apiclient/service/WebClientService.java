@@ -25,8 +25,8 @@ public class WebClientService {
   @Qualifier("apiClient")
   private WebClient client;
 
-  public Mono<Response> receive(final Integer limit, final CursorControll cursor) {
-    log.info("receive, limit={} , cursor={}", limit, cursor.getPosition());
+  public Mono<Response> extractFromApi(final Integer limit, final CursorControll cursor) {
+    log.info("extractFromApi, limit={} , cursor={}", limit, cursor.getPosition());
     return client.get()
             .uri(builder -> builder.path(NFE_RECEIVED_PATH)
                     .queryParam(CURSOR, cursor.getPosition())
@@ -34,6 +34,6 @@ public class WebClientService {
                     .build())
             .retrieve()
             .bodyToMono(Response.class)
-            .retryBackoff(3, Duration.ofMillis(100));
+            .retryBackoff(5, Duration.ofMillis(3000));
   }
 }

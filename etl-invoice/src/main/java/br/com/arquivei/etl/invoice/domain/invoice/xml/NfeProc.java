@@ -14,6 +14,9 @@ public class NfeProc {
 
   private NFe nfe;
 
+  @XmlElement(name = "protNFe", required = true)
+  private ProtNFe protNFe;
+
   @XmlElement(name = "NFe", required = true)
   public NFe getNFe() {
     return nfe;
@@ -21,5 +24,13 @@ public class NfeProc {
 
   public void setNFe(final NFe nfe) {
     this.nfe = nfe;
+  }
+
+  public ProtNFe getProtNFe() {
+    return protNFe;
+  }
+
+  public void setProtNFe(final ProtNFe protNFe) {
+    this.protNFe = protNFe;
   }
 }

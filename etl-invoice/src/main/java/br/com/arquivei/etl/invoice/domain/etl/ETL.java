@@ -52,17 +52,19 @@ public class ETL implements CommandLineRunner {
     final var cursor = cursorControllService.current();
 
     //Extract
-    final var response = webClientService.receive(limit, cursor);
+    final var response = webClientService.extractFromApi(limit, cursor);
 
-    //Transform
     response.subscribe(res -> {
       log.info("response, {}, Count={}", res.getStatus(), res.getCount());
       if (responseIsOk(res) && hasData(res)) {
 
         res.getData().forEach(invoice -> {
 
+          //Transform
+          final var nfeProc = invoiceService.transform(invoice);
+
           //Load
-          invoiceService.load(invoice);
+          invoiceService.load(nfeProc);
 
         });
         cursorControllService.update(cursor, res.getPage());
