@@ -7,6 +7,9 @@ $ docker version
 
 Client:
  Version:  18.06.0-ce
+
+$ docker-compose version
+docker-compose version 1.14.0
 ```
 
 ## Running
@@ -14,6 +17,10 @@ Client:
 ```bash
 $ docker-compose up
 ```
+
+## Access API for get invoices
+
++ http://localhost:8081/swagger-ui.html
 
 ## Links
 + https://www.base64decode.org/
