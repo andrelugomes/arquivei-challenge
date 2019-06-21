@@ -29,7 +29,7 @@ etl_1 | 2019-06-21 INFO 1 --- [main] b.c.arquivei.etl.invoice.domain.etl.ETL  : 
 
 ```
 
-## Access API for get invoices
+## Access API to get invoices
 
 + http://localhost:8081/swagger-ui.html
 
